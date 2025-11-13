@@ -7,7 +7,7 @@ import { RouterModule } from "@angular/router";
   selector: 'app-index',
   imports: [RouterModule],
   templateUrl: './index.html',
-  styleUrl: './index.css'
+  styleUrls: ['./index.css']
 })
 export class Index {
 

@@ -1,1 +1,10 @@
+:root{
+  --card-radius: 14px;
+  --card-shadow: 0 6px 24px rgba(0,0,0,.06);
+  --brand: #2563eb;       /* azul bonito */
+  --brand-600: #1e40af;   /* azul oscuro para hover */
+  --ok: #16a34a;          /* verde Submit */
+  --ok-700: #15803d;
+  --danger: #dc2626;
+}
 /* You can add global styles to this file, and also import other style files */
