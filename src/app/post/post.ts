@@ -1,6 +1,8 @@
 export interface Post {
-    id: number;
-    title: string;
-    body: string;
-    comment?: string;
+  _id: string;        // ✅ matches MongoDB
+  title: string;
+  body: string;
+  comment?: string;
+  createdAt?: string;  // optional, from timestamps
+  updatedAt?: string;
 }

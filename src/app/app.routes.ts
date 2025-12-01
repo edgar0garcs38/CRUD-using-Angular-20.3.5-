@@ -9,6 +9,6 @@ export const routes: Routes = [
     { path: "post", component: Index},
     { path: "posts/create", component: Create},
     { path: "posts/:postId/comment", component: Comment},
-    { path: "posts/:postId/edit", component: Edit},
+    { path: 'posts/:id/edit', component: Edit },
     { path: "posts/:postId", component: Show},
 ];

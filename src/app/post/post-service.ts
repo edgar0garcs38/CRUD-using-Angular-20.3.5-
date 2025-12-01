@@ -34,7 +34,7 @@ export class PostService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.patch<Post>(`${this.apiURL}/posts/${postId}`, payload, { headers });
   }
-  deletePost(id: number): Observable<any>{
-    return this.http.delete<any>(this.apiURL + '/posts/' + id);
+  deletePost(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiURL}/posts/${id}`);
   }
 }
