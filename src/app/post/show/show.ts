@@ -15,6 +15,7 @@ export class Show {
   id = '';
   title = '';
   body = '';
+  comment = '';
   constructor(private postService: PostService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -22,6 +23,7 @@ export class Show {
     this.postService.findPost(this.id).subscribe((post: Post) => {
       this.title = post.title;
       this.body = post.body;
+      this.comment = post.comment || ''; 
     });
   }
 
