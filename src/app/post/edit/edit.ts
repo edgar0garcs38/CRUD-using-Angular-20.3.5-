@@ -17,6 +17,7 @@ export class Edit {
   title = '';
   body = '';
   error = '';
+  comment = ''; 
 
   constructor(
     private postService: PostService,
@@ -30,6 +31,7 @@ export class Edit {
       this.postService.findPost(this.id).subscribe((post: Post) => {
         this.title = post.title;
         this.body = post.body;
+        this.comment = post.comment || ''; 
       });
     } else {
       this.error = "Invalid post ID.";
@@ -38,7 +40,7 @@ export class Edit {
 
 
   submit() {
-    if (!this.title || !this.body) {
+    if (!this.title || !this.body || !this.comment) {
       this.error = "All fields are required!";
       return;
     }
@@ -46,7 +48,8 @@ export class Edit {
     // ✅ no manual id, MongoDB handles _id
     const input: Partial<Post> = {
       title: this.title,
-      body: this.body
+      body: this.body,
+      comment: this.comment 
     };
 
     this.postService.updatePosts(this.id, input as Post).subscribe({

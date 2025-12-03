@@ -16,11 +16,12 @@ export class Create {
   title = '';
   body = '';
   error = '';
+  comment = ''; 
 
   constructor(private postService: PostService, private router: Router) {}
 
   submit() {
-    if (!this.title || !this.body) {
+    if (!this.title || !this.body || !this.comment) {
       this.error = "All fields are required!";
       return;
     }
@@ -28,7 +29,8 @@ export class Create {
     // ✅ Only send title and body, MongoDB will create _id
     const input: Partial<Post> = {
       title: this.title,
-      body: this.body
+      body: this.body,
+      comment: this.comment
     };
 
     this.postService.createPosts(input as Post).subscribe({
