@@ -3,14 +3,16 @@
     <h3 class="feed-title">Bienvenido !!!</h3>
   </div>
 
-  <!-- Barra tipo "¿Qué estás pensando?" -->
+  <!-- Caja tipo "¿Qué estás pensando?" -->
   <div class="composer-card" [routerLink]="['/posts/create']">
     <span class="composer-placeholder">Publica algo chévere…</span>
   </div>
 
   <div class="post-list">
-    @for (post of posts; track post.id) {
+    @for (post of posts; track post._id) {
       <article class="post-card">
+        
+        <!-- Encabezado del post -->
         <header class="post-card-header">
           <div class="composer-avatar">👤</div>
           <div class="post-header-text">
@@ -18,14 +20,17 @@
           </div>
         </header>
 
+        <!-- Contenido del post -->
         <p class="post-body">
           {{ post.body }}
         </p>
 
+        <!-- Acciones -->
         <footer class="post-card-actions">
-          <!-- Comentar redireccionar del ver PENDIENTE -->
+          
+          <!-- Comentar -->
           <a
-            [routerLink]="['/posts', post.id]"
+            [routerLink]="['/posts', post._id, 'comment']"
             class="icon-action icon-comment"
           >
             <span class="icon-emoji">💬</span>
@@ -34,7 +39,7 @@
 
           <!-- Editar -->
           <a
-            [routerLink]="['/posts', post.id, 'edit']"
+            [routerLink]="['/posts', post._id, 'edit']"
             class="icon-action icon-edit"
           >
             <span class="icon-emoji">✏️</span>
@@ -44,13 +49,15 @@
           <!-- Eliminar -->
           <button
             type="button"
-            (click)="deletePost(post.id)"
+            (click)="deletePost(post._id)"
             class="icon-action icon-delete"
           >
             <span class="icon-emoji">🗑️</span>
             <span class="icon-label">Eliminar</span>
           </button>
+
         </footer>
+
       </article>
     }
   </div>

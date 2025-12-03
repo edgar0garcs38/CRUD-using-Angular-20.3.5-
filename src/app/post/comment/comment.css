@@ -1,0 +1,147 @@
+/* ===== BOTÓN DE REGRESO ===== */
+.comment-back-row {
+  max-width: 900px;
+  margin: 1rem auto 0.75rem;
+  padding: 0 1rem;
+}
+
+.comment-back-link {
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-decoration: none;
+}
+
+.comment-back-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== TARJETA PRINCIPAL ===== */
+.comment-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+/* ===== HEADER ===== */
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.comment-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f46e5, #ec4899);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.comment-header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.comment-subtitle {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ===== VISTA PREVIA DEL POST ===== */
+.comment-post-preview {
+  padding: 0.9rem;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.2rem;
+}
+
+.comment-post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.comment-post-body {
+  font-size: 0.95rem;
+  color: #374151;
+  margin: 0;
+}
+
+/* ===== FORMULARIO ===== */
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.comment-field label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.comment-textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  background: #f9fafb;
+  min-height: 120px;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.comment-textarea:focus {
+  border-color: #4f46e5;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25);
+}
+
+/* ===== ERROR ===== */
+.comment-error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  background: #fee2e2;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+}
+
+/* ===== BOTÓN ===== */
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.comment-btn-primary {
+  border: none;
+  padding: 0.45rem 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.comment-btn-primary:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}

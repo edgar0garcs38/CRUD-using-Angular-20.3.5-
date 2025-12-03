@@ -1,31 +1,46 @@
-<div class="card mt-5">
-  <h3 class="card-header p-3">Create a Comment in Post</h3>
-  <div class="card-body">
+<!-- Botón atrás -->
+<div class="comment-back-row">
+  <a [routerLink]="['/post']" class="comment-back-link">← Volver</a>
+</div>
 
-    <div class="m-1">
-      <a [routerLink]="['/post']" class="btn btn-primary btn-sm">Back</a>
+<!-- Tarjeta principal -->
+<div class="comment-card">
+  <header class="comment-header">
+    <div class="comment-avatar">💬</div>
+    <div class="comment-header-text">
+      <h2 class="comment-title">Agregar comentario</h2>
+      <p class="comment-subtitle">Estás comentando esta publicación:</p>
+    </div>
+  </header>
+
+  <!-- Vista previa del post -->
+  <section class="comment-post-preview">
+    <h3 class="comment-post-title">{{ title }}</h3>
+    <p class="comment-post-body">{{ body }}</p>
+  </section>
+
+  <!-- Formulario -->
+  <form (ngSubmit)="submit()" class="comment-form">
+    <div class="comment-field">
+      <label for="comment">Tu comentario</label>
+      <textarea
+        [(ngModel)]="comment"
+        name="comment"
+        id="comment"
+        class="comment-textarea"
+        placeholder="Escribe algo chévere…"
+      ></textarea>
     </div>
 
-    <form (ngSubmit)="submit()">
-      <div>
-        <p><strong>Title: </strong> {{ title }}</p>
-        <p><strong>Body: </strong> {{ body }}</p>
-      </div>
-      <div class="mt-2">
-        <label for="comment">Comment:</label>
-        <textarea [(ngModel)]="comment" name="comment" id="comment" class="form-control"></textarea>
-      </div>
+    <!-- Error -->
+    @if (error) {
+    <div>
+      <span class="comment-error">{{ error }}</span>
+    </div>
+    }
 
-        @if (error) {
-        <div>
-            <span class="text-danger">{{ error }}</span>
-        </div>
-        }
-
-      <div class="mt-2">
-        <button class="btn btn-success" type="submit">Submit</button>
-      </div>
-    </form>
-
-  </div>
+    <div class="comment-actions">
+      <button class="comment-btn-primary" type="submit">Publicar comentario</button>
+    </div>
+  </form>
 </div>
