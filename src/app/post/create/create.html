@@ -1,31 +1,76 @@
-<div class="card mt-5">
-    <h3 class="card-header p-3">Create Post</h3>
-    <div class="card-body">
+<div class="feed-container">
+  <!-- Enlace para volver al feed -->
+  <div class="create-back-row">
+    <a [routerLink]="['/post']" class="create-back-link">
+      Regresar.
+    </a>
+  </div>
 
-        <div class="m-1">
-            <a [routerLink]="['/post']" class="btn btn-primary btn-sm">Back</a>
+  <!-- Tarjeta de creación de publicación -->
+  <article class="create-card">
+    <header class="create-header">
+      <div class="create-header-text">
+        <h3 class="create-title">Crear publicación</h3>
+        <span class="create-subtitle">
+          Escribe lo que piensas y compártelo con el mundo.
+        </span>
+      </div>
+    </header>
+
+    <form (ngSubmit)="submit()" class="create-form" enctype="multipart/form-data">
+      <div class="create-field">
+        <input
+          [(ngModel)]="title"
+          type="text"
+          name="title"
+          id="title"
+          class="create-input"
+          placeholder="Título de tu publicación"
+        />
+      </div>
+
+      <div class="create-field">
+        <textarea
+          [(ngModel)]="body"
+          name="body"
+          id="body"
+          class="create-textarea"
+          rows="4"
+          placeholder="¿Qué quieres compartir hoy?"
+        ></textarea>
+      </div>
+
+      <!-- Caja para subir foto -->
+       <!-- <div class="create-field create-upload-box">
+        <label class="upload-label" for="imageInput">📷 Añadir foto</label>
+        <input
+          type="file"
+          id="imageInput"
+          class="upload-input"
+          (change)="onFileSelected($event)"
+        />
+      </div> -->
+
+      <!-- Vista previa de la imagen -->
+      <!-- <div class="preview-container" *ngIf="previewImage">
+        <img
+          [src]="previewImage"
+          alt="Vista previa"
+          class="preview-image"
+        />
+      </div> -->
+
+      @if (error) {
+        <div class="create-error">
+          <span>{{ error }}</span>
         </div>
+      }
 
-        <form (ngSubmit)="submit()">
-            <div class="mt-2">
-                <label for="title">Title:</label>
-                <input [(ngModel)]="title" type="text" name="title" id="title" class="form-control">
-            </div>
-            <div class="mt-2">
-                <label for="title">Body:</label>
-                <textarea [(ngModel)]="body" type="text" name="body" id="body" class="form-control"></textarea>
-            </div>
-
-            @if(error) {
-                <div>
-                    <span class="text-danger">{{ error }}</span>
-                </div>
-            }
-
-            <div class="mt-2">
-                <button class="btn btn-success">Submit</button>
-            </div>
-         </form>
-
-    </div>
+      <footer class="create-actions">
+        <button type="submit" class="create-btn-primary">
+          Publicar
+        </button>
+      </footer>
+    </form>
+  </article>
 </div>

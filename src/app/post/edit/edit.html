@@ -1,31 +1,56 @@
-<div class="card mt-5">
-    <h3 class="card-header p-3">Edit Post</h3>
-    <div class="card-body">
+<div class="feed-container">
+  <!-- Enlace para volver al feed -->
+  <div class="edit-back-row">
+    <a [routerLink]="['/post']" class="edit-back-link">
+      Volver
+    </a>
+  </div>
 
-        <div class="m-1">
-            <a [routerLink]="['/post']" class="btn btn-primary btn-sm">Back</a>
+  <!--  edición de publicación -->
+  <article class="edit-card">
+    <header class="edit-header">
+      <div class="edit-header-text">
+        <h3 class="edit-title">Editar publicación</h3>
+        <span class="edit-subtitle">
+          Ajusta el contenido de tu post.
+        </span>
+      </div>
+    </header>
+
+    <form (ngSubmit)="submit()" class="edit-form">
+      <div class="edit-field">
+        <input
+          [(ngModel)]="title"
+          type="text"
+          name="title"
+          id="title"
+          class="edit-input"
+          placeholder="Edita el título de tu publicación"
+        />
+      </div>
+
+      <div class="edit-field">
+        <textarea
+          [(ngModel)]="body"
+          name="body"
+          id="body"
+          class="edit-textarea"
+          rows="4"
+          placeholder="Actualiza el contenido de tu publicación"
+        ></textarea>
+      </div>
+
+      @if (error) {
+        <div class="edit-error">
+          <span>{{ error }}</span>
         </div>
+      }
 
-        <form (ngSubmit)="submit()">
-            <div class="mt-2">
-                <label for="title">Title:</label>
-                <input [(ngModel)]="title" type="text" name="title" id="title" class="form-control">
-            </div>
-            <div class="mt-2">
-                <label for="title">Body:</label>
-                <textarea [(ngModel)]="body" type="text" name="body" id="body" class="form-control"></textarea>
-            </div>
-
-            @if(error) {
-                <div>
-                    <span class="text-danger">{{ error }}</span>
-                </div>
-            }
-
-            <div class="mt-2">
-                <button class="btn btn-success">Submit</button>
-            </div>
-         </form>
-
-    </div>
+      <footer class="edit-actions">
+        <button type="submit" class="edit-btn-primary">
+          Guardar cambios
+        </button>
+      </footer>
+    </form>
+  </article>
 </div>
