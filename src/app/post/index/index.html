@@ -14,16 +14,27 @@
           <th>Title</th>
           <th>Body</th>
           <th>Comments</th>
+          <th>Image</th> <!-- ✅ new column -->
           <th width="250px">Actions</th>
         </tr>
       </thead>
       <tbody>
         @for(post of posts; track post._id) {
         <tr>
-          <td>{{ post._id }}</td> <!-- ✅ use _id -->
+          <td>{{ post._id }}</td>
           <td>{{ post.title }}</td>
           <td>{{ post.body }}</td>
           <td>{{ post.comment }}</td>
+
+          <!-- ✅ Show thumbnail if image exists -->
+          <td>
+            <div *ngIf="post.imageUrl; else noImage">
+              <img src="http://localhost:8000{{ post.imageUrl }}" alt="Post image" class="post-image">
+            </div>
+            <ng-template #noImage>
+              <span class="text-muted">No image</span>
+            </ng-template>
+          </td>
 
           <td>
             <a [routerLink]="['/posts', post._id]" class="btn btn-info btn-sm m-1">Show</a>

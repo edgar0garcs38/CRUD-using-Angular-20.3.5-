@@ -17,7 +17,8 @@ export class Edit {
   title = '';
   body = '';
   error = '';
-  comment = ''; 
+  comment = '';
+  selectedFile: File | null = null; // ✅ new field
 
   constructor(
     private postService: PostService,
@@ -26,18 +27,23 @@ export class Edit {
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') || ''; // ✅ use 'id'
+    this.id = this.route.snapshot.paramMap.get('id') || '';
     if (this.id) {
       this.postService.findPost(this.id).subscribe((post: Post) => {
         this.title = post.title;
         this.body = post.body;
-        this.comment = post.comment || ''; 
+        this.comment = post.comment || '';
+        // ⚠️ If you want to show existing image preview, you can store post.imageUrl here
       });
     } else {
       this.error = "Invalid post ID.";
     }
   }
 
+  // ✅ handle file selection
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0] || null;
+  }
 
   submit() {
     if (!this.title || !this.body || !this.comment) {
@@ -45,17 +51,20 @@ export class Edit {
       return;
     }
 
-    // ✅ no manual id, MongoDB handles _id
-    const input: Partial<Post> = {
-      title: this.title,
-      body: this.body,
-      comment: this.comment 
-    };
+    // ✅ Use FormData to send text + optional file
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('body', this.body);
+    formData.append('comment', this.comment);
 
-    this.postService.updatePosts(this.id, input as Post).subscribe({
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.postService.updatePosts(this.id, formData).subscribe({
       next: () => {
         alert("Post updated successfully!");
-        this.router.navigate(['/post']); // ✅ plural to match index route
+        this.router.navigate(['/post']);
       },
       error: err => {
         console.error('Error updating post:', err);

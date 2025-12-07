@@ -1,14 +1,14 @@
-// comment.component.ts
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService, CommentPayload } from '../post-service';
 import { Post } from '../post';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule, NgIf],
   templateUrl: './comment.html',
   styleUrls: ['./comment.css']
 })
@@ -19,6 +19,7 @@ export class Comment {
   body = '';
   comment = '';
   error = '';
+  imageUrl: string | null = null; // ✅ new field
 
   constructor(
     private postService: PostService,
@@ -32,8 +33,12 @@ export class Comment {
       next: (post: Post) => {
         this.title = post.title;
         this.body = post.body;
-        // if your backend stores comments as a string property named 'comment'
         this.comment = (post as any).comment || '';
+
+        // ✅ if backend returns image info
+        if ((post as any).imageUrl) {
+          this.imageUrl = (post as any).imageUrl;
+        }
       },
       error: (err) => {
         console.error('Error loading post', err);
@@ -42,34 +47,24 @@ export class Comment {
     });
   }
 
-// comment.component.ts (only the submit method shown)
-  submit(){
+  submit() {
     this.error = '';
     if (!this.comment || !this.comment.trim()) {
       this.error = "All fields are required!";
       return;
     }
 
-    const payload = { comment: this.comment.trim() };
-    console.log('PATCH payload:', payload);
+    const payload: CommentPayload = { comment: this.comment.trim() };
 
     this.postService.commentPosts(this.id, payload).subscribe({
       next: (updatedPost) => {
-        console.log('Server response:', updatedPost);
         alert("Post updated successfully!");
         this.router.navigate(['/post']);
       },
       error: (err) => {
         console.error('PATCH error response:', err);
-        // If server returns a message in err.error, show it:
-        if (err?.error) {
-          // try to give a helpful message:
-          this.error = err.error.message ?? JSON.stringify(err.error);
-        } else {
-          this.error = 'Failed to update comment (server error)';
-        }
+        this.error = err?.error?.message ?? 'Failed to update comment (server error)';
       }
     });
   }
-
 }

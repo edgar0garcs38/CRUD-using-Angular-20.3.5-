@@ -6,18 +6,26 @@
       <a [routerLink]="['/post']" class="btn btn-primary btn-sm">Back</a>
     </div>
 
-    <form (ngSubmit)="submit()">
+    <form (ngSubmit)="submit()" enctype="multipart/form-data">
       <div class="mt-2">
         <label for="title">Title:</label>
         <input [(ngModel)]="title" type="text" name="title" id="title" class="form-control">
       </div>
+
       <div class="mt-2">
         <label for="body">Body:</label>
         <textarea [(ngModel)]="body" name="body" id="body" class="form-control"></textarea>
       </div>
+
       <div class="mt-2">
-        <label for="body">Comment:</label>
+        <label for="comment">Comment:</label>
         <textarea [(ngModel)]="comment" name="comment" id="comment" class="form-control"></textarea>
+      </div>
+
+      <!-- ✅ Optional image upload/change -->
+      <div class="mt-2">
+        <label for="image">Replace Image (optional):</label>
+        <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" class="form-control">
       </div>
 
       @if(error) {

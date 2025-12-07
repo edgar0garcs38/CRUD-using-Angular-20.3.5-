@@ -16,9 +16,15 @@ export class Create {
   title = '';
   body = '';
   error = '';
-  comment = ''; 
+  comment = '';
+  selectedFile: File | null = null; // ✅ new field
 
   constructor(private postService: PostService, private router: Router) {}
+
+  // ✅ handle file selection
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0] || null;
+  }
 
   submit() {
     if (!this.title || !this.body || !this.comment) {
@@ -26,17 +32,20 @@ export class Create {
       return;
     }
 
-    // ✅ Only send title and body, MongoDB will create _id
-    const input: Partial<Post> = {
-      title: this.title,
-      body: this.body,
-      comment: this.comment
-    };
+    // ✅ Use FormData to send text + optional file
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('body', this.body);
+    formData.append('comment', this.comment);
 
-    this.postService.createPosts(input as Post).subscribe({
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.postService.createPosts(formData).subscribe({
       next: () => {
         alert("Post created successfully!");
-        this.router.navigate(['/post']); // ✅ match your index route
+        this.router.navigate(['/post']);
       },
       error: err => {
         console.error('Error creating post:', err);

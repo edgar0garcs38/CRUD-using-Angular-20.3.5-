@@ -5,4 +5,5 @@ export interface Post {
   comment?: string;
   createdAt?: string;  // optional, from timestamps
   updatedAt?: string;
+  imageUrl?: string;
 }

@@ -7,4 +7,13 @@
   --ok-700: #15803d;
   --danger: #dc2626;
 }
+.post-image {
+  width: 100%;          /* take full width of the container */
+  max-width: 400px;     /* optional: limit max width */
+  height: 250px;        /* fixed height for the box */
+  object-fit: cover;    /* crop/scale image to fill box */
+  border-radius: 8px;   /* optional: rounded corners */
+  display: block;
+}
+
 /* You can add global styles to this file, and also import other style files */

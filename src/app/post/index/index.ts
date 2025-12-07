@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { PostService } from '../post-service';
 import { Post } from '../post';
 import { RouterModule } from "@angular/router";
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-index',
   standalone: true,          // ✅ Angular 20 style
-  imports: [RouterModule],
+  imports: [RouterModule, NgIf],
   templateUrl: './index.html',
   styleUrls: ['./index.css']
 })
