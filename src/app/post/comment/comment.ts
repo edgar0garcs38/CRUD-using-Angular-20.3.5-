@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../post-service';
 import { Post } from '../post';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule, NgIf],
   templateUrl: './comment.html',
   styleUrls: ['./comment.css']
 })
