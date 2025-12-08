@@ -1,8 +1,8 @@
-// comment.component.ts
+// src/app/post/comment/comment.ts
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PostService, CommentPayload } from '../post-service';
+import { PostService } from '../post-service';
 import { Post } from '../post';
 
 @Component({
@@ -17,59 +17,61 @@ export class Comment {
   id = '';
   title = '';
   body = '';
+
   comment = '';
+
   error = '';
+  success = '';
+
+  imageUrl: string | null = null;
 
   constructor(
     private postService: PostService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['postId'];
+    this.id = this.route.snapshot.paramMap.get('id') || '';
+
+    if (!this.id) {
+      this.error = 'Identificador de publicación no válido.';
+      return;
+    }
+
     this.postService.findPost(this.id).subscribe({
       next: (post: Post) => {
         this.title = post.title;
         this.body = post.body;
-        // if your backend stores comments as a string property named 'comment'
-        this.comment = (post as any).comment || '';
+        this.comment = post.comment || '';
+        this.imageUrl = post.imageUrl || null;
       },
-      error: (err) => {
-        console.error('Error loading post', err);
-        this.error = 'Failed to load post';
+      error: () => {
+        this.error = 'No se pudo cargar la publicación.';
       }
     });
   }
 
-// comment.component.ts (only the submit method shown)
-  submit(){
+  submit(): void {
     this.error = '';
-    if (!this.comment || !this.comment.trim()) {
-      this.error = "All fields are required!";
+    this.success = '';
+
+    if (!this.comment.trim()) {
+      this.error = 'El comentario no puede estar vacío.';
       return;
     }
 
-    const payload = { comment: this.comment.trim() };
-    console.log('PATCH payload:', payload);
-
-    this.postService.commentPosts(this.id, payload).subscribe({
-      next: (updatedPost) => {
-        console.log('Server response:', updatedPost);
-        alert("Post updated successfully!");
-        this.router.navigate(['/post']);
+    this.postService.commentPosts(this.id, { comment: this.comment }).subscribe({
+      next: () => {
+        this.success = 'Comentario guardado correctamente.';
+        setTimeout(() => {
+          this.router.navigate(['/post']);
+        }, 1200);
       },
       error: (err) => {
-        console.error('PATCH error response:', err);
-        // If server returns a message in err.error, show it:
-        if (err?.error) {
-          // try to give a helpful message:
-          this.error = err.error.message ?? JSON.stringify(err.error);
-        } else {
-          this.error = 'Failed to update comment (server error)';
-        }
+        console.error('Error al guardar el comentario:', err);
+        this.error = 'No se pudo guardar el comentario.';
       }
     });
   }
-
 }

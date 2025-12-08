@@ -17,7 +17,13 @@
       </div>
     </header>
 
-    <form (ngSubmit)="submit()" class="create-form" enctype="multipart/form-data">
+    <form
+      (ngSubmit)="submit()"
+      class="create-form"
+      enctype="multipart/form-data"
+    >
+
+      <!-- Título -->
       <div class="create-field">
         <input
           [(ngModel)]="title"
@@ -29,6 +35,7 @@
         />
       </div>
 
+      <!-- Cuerpo -->
       <div class="create-field">
         <textarea
           [(ngModel)]="body"
@@ -40,32 +47,45 @@
         ></textarea>
       </div>
 
-      <!-- Caja para subir foto -->
-       <!-- <div class="create-field create-upload-box">
-        <label class="upload-label" for="imageInput">📷 Añadir foto</label>
+      <!-- Comentario -->
+      <div class="create-field">
+        <textarea
+          [(ngModel)]="comment"
+          name="comment"
+          id="comment"
+          class="create-textarea"
+          rows="3"
+          placeholder="Escribe un comentario adicional (opcional)…"
+        ></textarea>
+      </div>
+
+      <!-- Subir foto -->
+      <div class="create-field create-upload-box">
+        <label class="upload-label" for="imageInput">Añadir foto (opcional)</label>
         <input
           type="file"
           id="imageInput"
           class="upload-input"
+          accept="image/*"
           (change)="onFileSelected($event)"
         />
-      </div> -->
+      </div>
 
-      <!-- Vista previa de la imagen -->
-      <!-- <div class="preview-container" *ngIf="previewImage">
-        <img
-          [src]="previewImage"
-          alt="Vista previa"
-          class="preview-image"
-        />
-      </div> -->
-
+      <!-- Mensajes -->
+      
       @if (error) {
         <div class="create-error">
           <span>{{ error }}</span>
         </div>
       }
 
+      @if (success) {
+        <div class="create-success">
+          <span>{{ success }}</span>
+        </div>
+      }
+
+      <!-- Acciones -->
       <footer class="create-actions">
         <button type="submit" class="create-btn-primary">
           Publicar

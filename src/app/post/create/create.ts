@@ -6,7 +6,7 @@ import { Post } from '../post';
 
 @Component({
   selector: 'app-create',
-  standalone: true, // Angular 20 style
+  standalone: true,
   imports: [RouterModule, FormsModule],
   templateUrl: './create.html',
   styleUrls: ['./create.css']
@@ -15,32 +15,55 @@ export class Create {
 
   title = '';
   body = '';
+  comment = '';
   error = '';
-  comment = ''; 
+  success = '';          // mensaje de éxito
 
-  constructor(private postService: PostService, private router: Router) {}
+  selectedFile: File | null = null;
+
+  constructor(
+    private postService: PostService,
+    private router: Router
+  ) {}
+
+  onFileSelected(event: any) {
+    const file = event.target.files?.[0];
+    this.selectedFile = file || null;
+  }
 
   submit() {
-    if (!this.title || !this.body || !this.comment) {
-      this.error = "All fields are required!";
+    // limpiamos mensajes anteriores
+    this.error = '';
+    this.success = '';
+
+    if (!this.title || !this.body) {
+      this.error = 'El título y el contenido son obligatorios.';
       return;
     }
 
-    // ✅ Only send title and body, MongoDB will create _id
-    const input: Partial<Post> = {
-      title: this.title,
-      body: this.body,
-      comment: this.comment
-    };
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('body', this.body);
 
-    this.postService.createPosts(input as Post).subscribe({
+    if (this.comment) {
+      formData.append('comment', this.comment);
+    }
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.postService.createPosts(formData as any as Post).subscribe({
       next: () => {
-        alert("Post created successfully!");
-        this.router.navigate(['/post']); // ✅ match your index route
+        this.success = 'Publicación creada correctamente.';
+        // Espera un poco y vuelve al listado de posts
+        setTimeout(() => {
+          this.router.navigate(['/post']);
+        }, 1500);
       },
       error: err => {
-        console.error('Error creating post:', err);
-        this.error = "Failed to create post.";
+        console.error('Error al crear la publicación:', err);
+        this.error = 'No se pudo crear la publicación. Inténtalo nuevamente.';
       }
     });
   }

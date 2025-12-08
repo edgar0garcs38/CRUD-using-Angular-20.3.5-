@@ -1,17 +1,18 @@
 <div class="feed-container">
+  <!-- Encabezado -->
   <div class="feed-header">
     <h3 class="feed-title">Bienvenido !!!</h3>
   </div>
 
-  <!-- Caja tipo "¿Qué estás pensando?" -->
+  <!-- Barra "¿Qué estás pensando?" -->
   <div class="composer-card" [routerLink]="['/posts/create']">
     <span class="composer-placeholder">Publica algo chévere…</span>
   </div>
 
+  <!-- Lista de publicaciones -->
   <div class="post-list">
     @for (post of posts; track post._id) {
       <article class="post-card">
-        
         <!-- Encabezado del post -->
         <header class="post-card-header">
           <div class="composer-avatar">👤</div>
@@ -20,14 +21,23 @@
           </div>
         </header>
 
-        <!-- Contenido del post -->
+        <!-- Imagen (si existe) -->
+        <div *ngIf="post.imageUrl" class="post-image-wrapper">
+          <img [src]="'http://localhost:8000' + post.imageUrl" alt="Imagen del post" class="post-image">
+        </div>
+
+        <!-- Cuerpo del post -->
         <p class="post-body">
           {{ post.body }}
         </p>
 
+        <!-- Comentario principal (si existe) -->
+        <p *ngIf="post.comment" class="post-main-comment">
+          {{ post.comment }}
+        </p>
+
         <!-- Acciones -->
         <footer class="post-card-actions">
-          
           <!-- Comentar -->
           <a
             [routerLink]="['/posts', post._id, 'comment']"
@@ -46,19 +56,56 @@
             <span class="icon-label">Editar</span>
           </a>
 
-          <!-- Eliminar -->
+          <!-- Eliminar (abre el modal) -->
           <button
             type="button"
-            (click)="deletePost(post._id)"
+            (click)="confirmarEliminar(post)"
             class="icon-action icon-delete"
           >
             <span class="icon-emoji">🗑️</span>
             <span class="icon-label">Eliminar</span>
           </button>
-
         </footer>
-
       </article>
     }
+  </div>
+</div>
+
+<!-- ================= MODAL ELIMINAR PUBLICACIÓN ================= -->
+<div class="delete-modal-backdrop" *ngIf="mostrarModalEliminar">
+  <div class="delete-modal-card">
+    <header class="delete-modal-header">
+      <h3>Eliminar publicación</h3>
+    </header>
+
+    <section class="delete-modal-body">
+      <p>
+        ¿Estás seguro de que deseas eliminar esta publicación?
+      </p>
+      <p class="delete-modal-post-title">
+        "{{ postAEliminar?.title }}"
+      </p>
+      <p class="delete-modal-warning">
+        Esta acción no se puede deshacer.
+      </p>
+    </section>
+
+    <footer class="delete-modal-actions">
+      <button
+        type="button"
+        class="btn-cancelar"
+        (click)="cancelarEliminar()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="btn-eliminar"
+        (click)="eliminarConfirmado()"
+      >
+        Eliminar
+      </button>
+    </footer>
   </div>
 </div>

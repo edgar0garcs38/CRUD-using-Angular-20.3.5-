@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { PostService } from '../post-service';
 import { Post } from '../post';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-show',
-  imports: [RouterModule, FormsModule],
+  standalone: true,
+  imports: [RouterModule, FormsModule, NgIf],
   templateUrl: './show.html',
-  styleUrl: './show.css'
+  styleUrls: ['./show.css']
 })
 export class Show {
 
@@ -16,6 +18,8 @@ export class Show {
   title = '';
   body = '';
   comment = '';
+  imageUrl: string | null = null; // ✅ new field
+
   constructor(private postService: PostService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -23,8 +27,12 @@ export class Show {
     this.postService.findPost(this.id).subscribe((post: Post) => {
       this.title = post.title;
       this.body = post.body;
-      this.comment = post.comment || ''; 
+      this.comment = post.comment || '';
+
+      // ✅ if backend returns image info
+      if ((post as any).imageUrl) {
+        this.imageUrl = (post as any).imageUrl;
+      }
     });
   }
-
 }

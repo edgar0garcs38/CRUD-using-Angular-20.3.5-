@@ -6,7 +6,7 @@
     </a>
   </div>
 
-  <!--  edición de publicación -->
+  <!-- Tarjeta de edición de publicación -->
   <article class="edit-card">
     <header class="edit-header">
       <div class="edit-header-text">
@@ -17,7 +17,12 @@
       </div>
     </header>
 
-    <form (ngSubmit)="submit()" class="edit-form">
+    <form
+      (ngSubmit)="submit()"
+      class="edit-form"
+      enctype="multipart/form-data"
+    >
+      <!-- Título -->
       <div class="edit-field">
         <input
           [(ngModel)]="title"
@@ -29,6 +34,7 @@
         />
       </div>
 
+      <!-- Cuerpo -->
       <div class="edit-field">
         <textarea
           [(ngModel)]="body"
@@ -40,12 +46,46 @@
         ></textarea>
       </div>
 
+      <!-- Comentario -->
+      <div class="edit-field">
+        <textarea
+          [(ngModel)]="comment"
+          name="comment"
+          id="comment"
+          class="edit-textarea"
+          rows="3"
+          placeholder="Actualiza el comentario (opcional)…"
+        ></textarea>
+      </div>
+
+      <!-- Cambiar imagen -->
+      <div class="edit-field create-upload-box">
+        <label class="upload-label" for="imageEditInput">
+          Cambiar imagen (opcional)
+        </label>
+        <input
+          type="file"
+          id="imageEditInput"
+          class="upload-input"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      <!-- Mensajes -->
       @if (error) {
         <div class="edit-error">
           <span>{{ error }}</span>
         </div>
       }
 
+      @if (success) {
+        <div class="edit-success">
+          <span>{{ success }}</span>
+        </div>
+      }
+
+      <!-- Botón -->
       <footer class="edit-actions">
         <button type="submit" class="edit-btn-primary">
           Guardar cambios

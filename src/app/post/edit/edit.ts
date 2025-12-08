@@ -1,3 +1,4 @@
+// src/app/post/edit/edit.ts
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -6,7 +7,7 @@ import { Post } from '../post';
 
 @Component({
   selector: 'app-edit',
-  standalone: true, // Angular 20 style
+  standalone: true,
   imports: [RouterModule, FormsModule],
   templateUrl: './edit.html',
   styleUrls: ['./edit.css']
@@ -16,8 +17,12 @@ export class Edit {
   id = '';
   title = '';
   body = '';
+  comment = '';
+
   error = '';
-  comment = ''; 
+  success = '';
+
+  selectedFile: File | null = null;
 
   constructor(
     private postService: PostService,
@@ -26,40 +31,58 @@ export class Edit {
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') || ''; // ✅ use 'id'
-    if (this.id) {
-      this.postService.findPost(this.id).subscribe((post: Post) => {
-        this.title = post.title;
-        this.body = post.body;
-        this.comment = post.comment || ''; 
-      });
-    } else {
-      this.error = "Invalid post ID.";
-    }
-  }
+    this.id = this.route.snapshot.paramMap.get('id') || '';
 
-
-  submit() {
-    if (!this.title || !this.body || !this.comment) {
-      this.error = "All fields are required!";
+    if (!this.id) {
+      this.error = 'Identificador de publicación no válido.';
       return;
     }
 
-    // ✅ no manual id, MongoDB handles _id
-    const input: Partial<Post> = {
-      title: this.title,
-      body: this.body,
-      comment: this.comment 
-    };
-
-    this.postService.updatePosts(this.id, input as Post).subscribe({
-      next: () => {
-        alert("Post updated successfully!");
-        this.router.navigate(['/post']); // ✅ plural to match index route
+    this.postService.findPost(this.id).subscribe({
+      next: (post: Post) => {
+        this.title = post.title;
+        this.body = post.body;
+        this.comment = post.comment || '';
       },
-      error: err => {
-        console.error('Error updating post:', err);
-        this.error = "Failed to update post.";
+      error: () => {
+        this.error = 'No se pudo cargar la publicación.';
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files && event.target.files[0];
+    this.selectedFile = file ?? null;
+  }
+
+  submit() {
+    this.error = '';
+    this.success = '';
+
+    if (!this.title || !this.body) {
+      this.error = 'El título y el contenido son obligatorios.';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('body', this.body);
+    formData.append('comment', this.comment);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.postService.updatePosts(this.id, formData).subscribe({
+      next: () => {
+        this.success = 'Publicación actualizada correctamente.';
+        setTimeout(() => {
+          this.router.navigate(['/post']);
+        }, 1200);
+      },
+      error: (err) => {
+        console.error('Error al actualizar la publicación:', err);
+        this.error = 'No se pudo actualizar la publicación.';
       }
     });
   }
